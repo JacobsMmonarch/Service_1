@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "MonitoringAPI", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Мониторинг сетей", Version = "v1" });
 });
 
 builder.Services.AddAuthorization();
@@ -31,7 +31,7 @@ app.MapControllers();
 app.MapGet("/WeatherForecast", () => "Hello, this is WebService 1!");
 app.MapGet("/Network", () => "Hello, this is Network Monitoring Service!");
 app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MonitoringAPI v1"));
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Мониторинг"));
 
 
 app.Run();
