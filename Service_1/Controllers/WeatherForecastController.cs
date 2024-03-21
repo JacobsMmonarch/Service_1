@@ -10,13 +10,17 @@ namespace Service_1.Controllers
     public class NetworkController : ControllerBase
     {
         [HttpGet("Info")] // Измененный путь
-        public IActionResult GetNetworkInfo()
+        public IActionResult GetNetworkInfo([FromQuery] bool includeLoopback = false) // Добавлен параметр
         {
             var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
             var networkInfo = new List<NetworkInfo>();
 
             foreach (var networkInterface in networkInterfaces)
             {
+                // Пропускаем петлевые интерфейсы, если параметр includeLoopback равен false
+                if (!includeLoopback && networkInterface.NetworkInterfaceType == NetworkInterfaceType.Loopback)
+                    continue;
+
                 var ipProps = networkInterface.GetIPProperties();
                 var networkAddresses = ipProps.UnicastAddresses.Select(a => a.Address.ToString()).ToList();
 
@@ -37,9 +41,10 @@ namespace Service_1.Controllers
 
     public class NetworkInfo
     {
-        public string InterfaceName { get; set; }
+        public string? InterfaceName { get; set; } // Добавлен знак вопроса для допуска значения null
         public bool IsUp { get; set; }
-        public List<string> NetworkAddresses { get; set; }
+        public List<string>? NetworkAddresses { get; set; } // Добавлен знак вопроса для допуска значения null
         public long Speed { get; set; }
     }
+
 }
